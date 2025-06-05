@@ -1,8 +1,4 @@
 function normalizeMinMax(min, max) {
-  if (min === max) {
-    return min;
-  }
-
   min = Math.abs(min);
   max = Math.abs(max);
 
@@ -17,12 +13,20 @@ function getRandomNum(min, max) {
 }
 
 function getRandomCeil(min, max) {
+  if (min === max) {
+    return min;
+  }
+
   [min, max] = normalizeMinMax(min, max);
 
   return Math.round(getRandomNum(min, max));
 }
 
 function getRandomFloat(min, max, numAfterPoint) {
+  if (min === max) {
+    return min;
+  }
+
   [min, max] = normalizeMinMax(min, max);
 
   const random = getRandomNum(min, max);
@@ -31,5 +35,5 @@ function getRandomFloat(min, max, numAfterPoint) {
   return Math.round(random * multiplier) / multiplier;
 }
 
-console.log(getRandomCeil(5, 1));
+console.log(getRandomCeil(5, 5));
 console.log(getRandomFloat(1, 5, 5));
