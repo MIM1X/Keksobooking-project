@@ -1,7 +1,6 @@
-# Личный проект «{{projectTitle}}»
+# Личный проект «{{Кексобукинг}}»
 
-* Студент: [{{userName}}]({{userProfile}}).
-* Наставник: `Неизвестно`.
+* Студент: [{{MIMIX}}]({{[userProfile](https://htmlacademy.ru/profile/id2555293)}}).
 
 ---
 
