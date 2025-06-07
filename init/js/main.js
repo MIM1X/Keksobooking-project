@@ -1,4 +1,4 @@
-function normalizeMinMax(min, max) {
+function normalizePositiveMinMax(min, max) {
   min = Math.abs(min);
   max = Math.abs(max);
 
@@ -12,28 +12,27 @@ function getRandomNum(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-function getRandomCeil(min, max) {
+function getRandomPositiveCeil(min, max) {
   if (min === max) {
     return min;
   }
 
-  [min, max] = normalizeMinMax(min, max);
+  [min, max] = normalizePositiveMinMax(min, max);
 
   return Math.round(getRandomNum(min, max));
 }
 
-function getRandomFloat(min, max, numAfterPoint) {
+function getRandomPositiveFloat(min, max, numAfterPoint) {
   if (min === max) {
     return min;
   }
 
-  [min, max] = normalizeMinMax(min, max);
+  [min, max] = normalizePositiveMinMax(min, max);
 
-  const random = getRandomNum(min, max);
-  const multiplier = 10 ** numAfterPoint;
+  const result = getRandomNum(min, max);
 
-  return Math.round(random * multiplier) / multiplier;
+  return +result.toFixed(numAfterPoint);
 }
 
-console.log(getRandomCeil(5, 5));
-console.log(getRandomFloat(1, 5, 5));
+console.log(getRandomPositiveCeil(1, 5));
+console.log(getRandomPositiveFloat(1, 5, 3));
