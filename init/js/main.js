@@ -98,8 +98,10 @@ function getRandomArrayItem(array) {
 }
 
 function getRandomizeArray(array, from = 0) {
-  const shuffledArray = shuffleArray(array);
-  return shuffledArray.slice(0, getRandomPositiveCeil(from, array.length));
+  return shuffleArray(array).slice(
+    0,
+    getRandomPositiveCeil(from, array.length)
+  );
 }
 
 function createOffer() {
