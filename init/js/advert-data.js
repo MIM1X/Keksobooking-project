@@ -44,7 +44,7 @@ function createAuthor() {
 function createOffer() {
   return {
     title: "Самое выгодное предложение!!!",
-    address: "{{location.lat}}, {{location.lng}}",
+    address: createLocation(),
     price: Random.getPositiveCeil(1000, 10000),
     type: Random.getArrayItem(OFFER_TYPES),
     rooms: Random.getPositiveCeil(1, 6),
