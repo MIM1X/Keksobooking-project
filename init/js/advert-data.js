@@ -1,25 +1,15 @@
 import createRandomUtils from "./random-utils.js";
+import {
+  OFFER_TYPES,
+  OFFER_TIMES,
+  OFFER_FEATURES,
+  OFFER_PHOTOS,
+  TOTAL_IMAGES,
+} from "./constants.js";
 const Random = createRandomUtils();
-
-const OFFER_TYPES = ["palace", "flat", "house", "bungalow", "hotel"];
-const OFFER_TIMES = ["12:00", "13:00", "14:00"];
-const OFFER_FEATURES = [
-  "wifi",
-  "dishwasher",
-  "parking",
-  "washer",
-  "elevator",
-  "conditioner",
-];
-const OFFER_PHOTOS = [
-  "https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg",
-  "https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg",
-  "https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg",
-];
 
 //author
 const getAvatarUrl = (() => {
-  const TOTAL_IMAGES = 10;
   let availableNumbers = Array.from({ length: TOTAL_IMAGES }, (_, i) => i + 1);
 
   // Перемешиваем массив

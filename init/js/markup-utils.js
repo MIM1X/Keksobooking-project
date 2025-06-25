@@ -5,7 +5,7 @@ function setElementText(mainMarkup, needMarkup, text) {
 function setElementsState(parentClass, state = false) {
   const parent = document.querySelector(parentClass);
 
-  parent.classList.toggle(parent.classList[0] + "--disabled", !state);
+  parent.classList.toggle(`${parent.classList[0]}--disabled`, !state);
 
   for (const children of parent.children) {
     children.disabled = !state;

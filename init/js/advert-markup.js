@@ -1,14 +1,7 @@
 import { getAdvertsArray } from "./advert-generator.js";
 import { creatMarkupFunc } from "./markup-utils.js";
+import { TYPES } from "./constants.js";
 const Markup = creatMarkupFunc();
-
-const TYPES = {
-  flat: "Квартира",
-  bungalow: "Бунгало",
-  house: "Дом",
-  palace: "Дворец",
-  hotel: "Отель",
-};
 
 const popup = document.querySelector("#card").content.querySelector(".popup");
 
@@ -27,6 +20,11 @@ export function createAdvertMarkup(count = 10) {
       newPopup,
       ".popup__text--price",
       advert.offer.price + " ₽/ночь"
+    );
+    Markup.setElementText(
+      newPopup,
+      ".popup__type",
+      TYPES[advert.offer.type].name
     );
     Markup.setElementText(
       newPopup,
