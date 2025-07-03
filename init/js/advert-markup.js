@@ -1,21 +1,27 @@
-import { getAdvertsArray } from "./advert-generator.js";
 import { creatMarkupFunc } from "./markup-utils.js";
 import { TYPES } from "./constants.js";
 const Markup = creatMarkupFunc();
 
 const popup = document.querySelector("#card").content.querySelector(".popup");
 
-export function createAdvertMarkup(count = 10) {
+export function createAdvertMarkup(dataArray) {
   const advertMarkupArray = [];
 
-  getAdvertsArray(count).forEach((advert) => {
+  dataArray.forEach((advert) => {
     const newPopup = popup.cloneNode(true);
     Markup.setElementText(newPopup, ".popup__title", advert.offer.title);
     Markup.setElementText(
       newPopup,
       ".popup__text--address",
-      Object.values(advert.offer.address).join(", ")
+      advert.offer.address
     );
+
+    newPopup.querySelector(".popup__text--address").dataset.lat =
+      advert.location.lat;
+
+    newPopup.querySelector(".popup__text--address").dataset.lng =
+      advert.location.lng;
+
     Markup.setElementText(
       newPopup,
       ".popup__text--price",
@@ -40,15 +46,17 @@ export function createAdvertMarkup(count = 10) {
         advert.offer.checkout
     );
 
-    const features = newPopup.querySelector(".popup__features").children;
-    for (let i = features.length - 1; i >= 0; i--) {
-      const feature = features[i];
-      const isFeatureValid = advert.offer.features.some((allowedFeature) =>
-        feature.classList.contains(`popup__feature--${allowedFeature}`)
-      );
+    if (advert.offer.features) {
+      const features = newPopup.querySelector(".popup__features").children;
+      for (let i = features.length - 1; i >= 0; i--) {
+        const feature = features[i];
+        const isFeatureValid = advert.offer.features.some((allowedFeature) =>
+          feature.classList.contains(`popup__feature--${allowedFeature}`)
+        );
 
-      if (!isFeatureValid) {
-        feature.remove();
+        if (!isFeatureValid) {
+          feature.remove();
+        }
       }
     }
 
@@ -58,16 +66,20 @@ export function createAdvertMarkup(count = 10) {
       advert.offer.description
     );
 
-    const photos = newPopup.querySelector(".popup__photos");
-    const newPhoto = photos.querySelector(".popup__photo").cloneNode(true);
+    if (advert.offer.photos) {
+      const photos = newPopup.querySelector(".popup__photos");
+      const newPhoto = photos.querySelector(".popup__photo").cloneNode(true);
 
-    photos.replaceChildren(
-      ...advert.offer.photos.map((photo) => {
-        const newPhotoClone = newPhoto.cloneNode(true);
-        newPhotoClone.src = photo;
-        return newPhotoClone;
-      })
-    );
+      photos.replaceChildren(
+        ...advert.offer.photos.map((photo) => {
+          const newPhotoClone = newPhoto.cloneNode(true);
+          newPhotoClone.src = photo;
+          return newPhotoClone;
+        })
+      );
+    } else {
+      newPopup.querySelector(".popup__photos").replaceChildren();
+    }
 
     newPopup.querySelector(".popup__avatar").src = advert.author.avatar;
 

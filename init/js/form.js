@@ -1,4 +1,5 @@
 import { TYPES } from "./constants.js";
+import { sendServerData } from "./api.js";
 
 const form = document.querySelector(".ad-form");
 
@@ -9,6 +10,8 @@ const guests = form.querySelector("#capacity");
 
 const type = form.querySelector("#type");
 const price = form.querySelector("#price");
+
+const slider = form.querySelector(".ad-form__slider");
 
 const timeForm = form.querySelector(".ad-form__element--time");
 const timeIn = form.querySelector("#timein");
@@ -41,10 +44,41 @@ pristine.addValidator(
   }
 );
 
+noUiSlider.create(slider, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: 0,
+  step: 1,
+  connect: "lower",
+  format: {
+    to: function (value) {
+      return value.toFixed(0);
+    },
+    from: function (value) {
+      return +value;
+    },
+  },
+});
+
+slider.noUiSlider.on("update", () => {
+  price.value = slider.noUiSlider.get();
+});
+
 type.addEventListener("change", function () {
   const minPrice = TYPES[type.value].price;
   price.min = minPrice;
   price.placeholder = minPrice;
+
+  slider.noUiSlider.updateOptions({
+    range: {
+      min: minPrice,
+      max: 100000,
+    },
+    start: minPrice,
+    step: 1,
+  });
 });
 
 pristine.addValidator(
@@ -66,8 +100,8 @@ form.addEventListener("submit", (evt) => {
   evt.preventDefault();
 
   if (pristine.validate()) {
-    console.log("Форма отправлена");
-  } else {
-    console.log("Форма не отправлена");
+    const formData = new FormData(form);
+    sendServerData(formData);
+    form.reset();
   }
 });

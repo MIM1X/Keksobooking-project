@@ -38,6 +38,11 @@ const TYPES = {
   },
 };
 
+const CENTER_TOKYO = {
+  lat: 35.681729,
+  lng: 139.753927,
+};
+
 export {
   TYPES,
   TOTAL_IMAGES,
@@ -45,4 +50,5 @@ export {
   OFFER_FEATURES,
   OFFER_TIMES,
   OFFER_TYPES,
+  CENTER_TOKYO,
 };
