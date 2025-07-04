@@ -225,6 +225,7 @@
               name="price"
               type="number"
               placeholder="0"
+              value="0"
               min="0"
               max="100000"
               required
@@ -260,9 +261,9 @@
           <fieldset class="ad-form__element">
             <label class="ad-form__label" for="capacity">Количество мест</label>
             <select id="capacity" name="capacity">
-              <option value="3" selected>для 3 гостей</option>
+              <option value="1" selected>для 1 гостя</option>
               <option value="2">для 2 гостей</option>
-              <option value="1">для 1 гостя</option>
+              <option value="3">для 3 гостей</option>
               <option value="0">не для гостей</option>
             </select>
           </fieldset>
@@ -363,7 +364,6 @@
                   name="images"
                   class="ad-form__input visually-hidden"
                   accept="image/*"
-                  required
                 />
                 <label for="images" class="ad-form__drop-zone"
                   >Загрузить<br />фото...</label

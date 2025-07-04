@@ -1,6 +1,9 @@
-import { TYPES } from "./constants.js";
+import { CENTER_TOKYO, TYPES } from "./constants.js";
 import { sendServerData } from "./api.js";
+import { mainPinMarker, map } from "./map.js";
+import { showNotification } from "./form-notifications.js";
 
+const formFilters = document.querySelector(".map__filters");
 const form = document.querySelector(".ad-form");
 
 const pristine = new Pristine(form);
@@ -16,6 +19,12 @@ const slider = form.querySelector(".ad-form__slider");
 const timeForm = form.querySelector(".ad-form__element--time");
 const timeIn = form.querySelector("#timein");
 const timeOut = form.querySelector("#timeout");
+
+const resetBtn = form.querySelector(".ad-form__reset");
+
+const address = document.querySelector("#address");
+
+address.value = Object.values(CENTER_TOKYO).join(", ");
 
 pristine.addValidator(
   guests,
@@ -96,12 +105,45 @@ function syncTimes(evt) {
 }
 timeForm.addEventListener("change", syncTimes);
 
+function resetForm() {
+  formFilters.reset();
+  form.reset();
+  mainPinMarker.setLatLng(CENTER_TOKYO);
+  map.setView(CENTER_TOKYO, 12);
+  address.value = Object.values(CENTER_TOKYO).join(", ");
+
+  slider.noUiSlider.updateOptions({
+    range: {
+      min: 0,
+      max: 100000,
+    },
+    start: 0,
+    step: 1,
+  });
+}
+
+mainPinMarker.on("moveend", (evt) => {
+  address.value = `${evt.target.getLatLng().lat.toFixed(6)}, ${evt.target
+    .getLatLng()
+    .lng.toFixed(6)}`;
+});
+
 form.addEventListener("submit", (evt) => {
   evt.preventDefault();
 
   if (pristine.validate()) {
     const formData = new FormData(form);
     sendServerData(formData);
-    form.reset();
+
+    resetForm();
+    showNotification();
+  } else {
+    showNotification(true);
   }
+});
+
+resetBtn.addEventListener("click", (evt) => {
+  evt.preventDefault();
+
+  resetForm();
 });

@@ -4,10 +4,6 @@ import { getServerData } from "./api.js";
 import { creatMarkupFunc } from "./markup-utils.js";
 const Markup = creatMarkupFunc();
 
-const address = document.querySelector("#address");
-
-address.value = Object.values(CENTER_TOKYO).join(", ");
-
 const map = L.map("map-canvas")
   .on("load", () => {
     Markup.setElementsState(".map__filters", true);
@@ -41,16 +37,8 @@ const mainPinMarker = L.marker(CENTER_TOKYO, {
 
 mainPinMarker.addTo(map);
 
-mainPinMarker.on("moveend", (evt) => {
-  address.value = `${evt.target.getLatLng().lat.toFixed(6)}, ${evt.target
-    .getLatLng()
-    .lng.toFixed(6)}`;
-});
-
 getServerData().then((Adverts) => {
-  console.log(Adverts);
   createAdvertMarkup(Adverts).forEach((advert) => {
-    console.log(advert.querySelector(".popup__text--address").textContent);
     const pinMarker = L.marker(
       {
         lat: advert.querySelector(".popup__text--address").dataset.lat,
@@ -63,3 +51,5 @@ getServerData().then((Adverts) => {
     pinMarker.addTo(similarMarkerGroup).bindPopup(advert);
   });
 });
+
+export { mainPinMarker, map };

@@ -1,7 +1,7 @@
 const getServerData = () => {
-  return fetch("https://25.javascript.htmlacademy.pro/keksobooking/data").then(
-    (response) => response.json()
-  );
+  return fetch("https://25.javascript.htmlacademy.pro/keksobooking/data")
+    .then((response) => response.json())
+    .catch((error) => alert(error));
 };
 
 const sendServerData = (data) => {
