@@ -43,6 +43,8 @@ const CENTER_TOKYO = {
   lng: 139.753927,
 };
 
+const FILE_TYPES = ["gif", "jpg", "jpeg", "png"];
+
 export {
   TYPES,
   TOTAL_IMAGES,
@@ -51,4 +53,5 @@ export {
   OFFER_TIMES,
   OFFER_TYPES,
   CENTER_TOKYO,
+  FILE_TYPES,
 };

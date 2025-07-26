@@ -59,7 +59,7 @@ function getArray(array, from = 0) {
   return shuffleArray(array).slice(0, getPositiveCeil(from, array.length));
 }
 
-export default function createRandomUtils() {
+function createRandomUtils() {
   return {
     getNum,
     getPositiveCeil,
@@ -70,3 +70,5 @@ export default function createRandomUtils() {
     getArray,
   };
 }
+
+export const Random = createRandomUtils();

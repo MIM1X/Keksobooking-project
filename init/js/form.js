@@ -1,10 +1,19 @@
 import { CENTER_TOKYO, TYPES } from "./constants.js";
 import { sendServerData } from "./api.js";
-import { mainPinMarker, map } from "./map.js";
+import { mainPinMarker, map, drawPinMarkers } from "./map.js";
 import { showNotification } from "./form-notifications.js";
+import { debounce } from "./debounce.js";
+import { setPreview } from "./photo-preview.js";
+
+const fileField = document.querySelector(".ad-form-header__input");
+const fileUpload = document.querySelector(".ad-form__input");
 
 const formFilters = document.querySelector(".map__filters");
 const form = document.querySelector(".ad-form");
+
+const featureFilters = formFilters.querySelector("#housing-features");
+const features = featureFilters.querySelectorAll("input[type='checkbox']");
+const filterElements = formFilters.querySelectorAll("select");
 
 const pristine = new Pristine(form);
 
@@ -100,6 +109,9 @@ pristine.addValidator(
   }
 );
 
+setPreview(fileField, document.querySelector(".ad-form-header__preview"));
+setPreview(fileUpload, document.querySelector(".ad-form__photo"));
+
 function syncTimes(evt) {
   timeIn.value = timeOut.value = evt.target.value;
 }
@@ -111,6 +123,8 @@ function resetForm() {
   mainPinMarker.setLatLng(CENTER_TOKYO);
   map.setView(CENTER_TOKYO, 12);
   address.value = Object.values(CENTER_TOKYO).join(", ");
+
+  debouncedDrawMarks();
 
   slider.noUiSlider.updateOptions({
     range: {
@@ -144,6 +158,43 @@ form.addEventListener("submit", (evt) => {
 
 resetBtn.addEventListener("click", (evt) => {
   evt.preventDefault();
-
   resetForm();
+});
+
+const debouncedDrawMarks = debounce(
+  (featuresArray, filters) => drawPinMarkers(featuresArray, filters),
+  500
+);
+
+formFilters.addEventListener("change", () => {
+  const featuresArray = [];
+  const filters = {
+    type: null,
+    price: null,
+    rooms: null,
+    guests: null,
+  };
+
+  filterElements.forEach((element) => {
+    if (element.name === "housing-type") {
+      filters.type = element.value;
+    }
+    if (element.name === "housing-price") {
+      filters.price = element.value;
+    }
+    if (element.name === "housing-rooms") {
+      filters.rooms = element.value;
+    }
+    if (element.name === "housing-guests") {
+      filters.guests = element.value;
+    }
+  });
+
+  features.forEach((feature) => {
+    if (feature.checked) {
+      featuresArray.push(feature.value);
+    }
+  });
+
+  debouncedDrawMarks(featuresArray, filters);
 });
